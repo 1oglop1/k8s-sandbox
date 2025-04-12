@@ -1,0 +1,5 @@
+name: pulumi-sandbox
+runtime: nodejs
+
+backend:
+  url: file://

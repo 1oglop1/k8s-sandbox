@@ -1,0 +1,55 @@
+{
+    "name": "@1oglop1/pulumi-k8s-argocd",
+    "private": true,
+    "version": "1.1.0",
+    "description": "common utility code for pulumi projects",
+    "license": "UNLICENSED",
+    "author": "",
+    "repository": "",
+    "keywords": [
+        "pulumi"
+    ],
+    "scripts": {
+        "prepublishOnly": "tsc",
+        "prettier": "prettier --write --log-level error .",
+        "prettier-check": "prettier --check .",
+        "test": "PULUMI_TEST_MODE=true PULUMI_NODEJS_PROJECT='test' PULUMI_NODEJS_STACK='dev' PULUMI_CONFIG='{ \"aws:region\": \"eu-central-1\" }' mocha -r ./node_modules/ts-node/register 'lib/**/*.spec.ts' 'pulumi/projects/**/*.spec.ts' 'lambda/*/src/**/*.spec.ts'"
+    },
+    "files": [
+        "/dist"
+    ],
+    "dependencies": {
+        "@aws-sdk/client-cloudwatch-logs": "3.738.0",
+        "@aws-sdk/client-ec2": "3.775.0",
+        "@aws-sdk/client-eventbridge": "3.738.0",
+        "@aws-sdk/client-guardduty": "3.738.0",
+        "@aws-sdk/client-organizations": "3.738.0",
+        "@aws-sdk/client-sts": "3.738.0",
+        "@azure/identity": "^4.6.0",
+        "@microsoft/microsoft-graph-client": "^3.0.7",
+        "@microsoft/msgraph-sdk-applications": "^1.0.0-preview.42",
+        "@pulumi/aws": "6.74.0",
+        "@types/jquery": "^3.5.32",
+        "form-data": "^4.0.0",
+        "parcel": "^2.12.0"
+    },
+    "devDependencies": {
+        "@babel/helper-get-function-arity": "7.16.7",
+        "@trivago/prettier-plugin-sort-imports": "4.3.0",
+        "@types/chai": "4.3.20",
+        "@types/lodash": "4.17.16",
+        "@types/mocha": "10.0.10",
+        "@types/netmask": "2.0.5",
+        "@types/node": "20.17.27",
+        "@types/psl": "1.1.3",
+        "@vercel/ncc": "0.38.3",
+        "axios": "1.8.4",
+        "axios-mock-adapter": "1.22.0",
+        "fast-check": "3.23.2",
+        "mocha": "10.8.2",
+        "prettier": "3.5.3",
+        "ts-node": "7.0.1",
+        "typescript": "5.8.2"
+    },
+    "packageManager": "yarn@3.8.7"
+}
