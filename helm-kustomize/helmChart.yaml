@@ -1,0 +1,11 @@
+# https://medium.com/@brent.gruber77/the-power-of-kustomize-and-helm-5773d0f4d95e
+# https://trstringer.com/helm-kustomize/
+apiVersion: builtin
+kind: HelmChartInflationGenerator
+metadata:
+  name: cert-manager
+name: cert-manager
+namespace: cert-manager
+releaseName: cert-manager
+repo: https://charts.jetstack.io
+valuesFile: values.yaml

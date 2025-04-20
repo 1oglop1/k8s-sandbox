@@ -1,0 +1,4 @@
+traefik-whoami:
+  whoami:
+    name: "chart-chart"
+    domain: what.k8s.orb.local

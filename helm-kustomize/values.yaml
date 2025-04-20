@@ -1,0 +1,17 @@
+whoami:
+  name: "helm-kustomize"
+
+
+#installCRDs: true
+#serviceAccount:
+#  create: false
+#  name: cert-manager
+#
+## https://github.com/cert-manager/cert-manager/issues/3237
+#webhook:
+#  hostNetwork: true
+#  securePort: 10260
+#
+#global:
+#  leaderElection:
+#    namespace: cert-manager
