@@ -6,15 +6,18 @@ The intention is to have a good dev env which is easy to build up and teardown.
 
 ```
 .
-├── argo-apps  - argoCD apps - helmcharts or kustomized helmchats
-├── argoCD - argocd deployment
-├── helm-chart-chart  - helm chart referencing a local chart
-├── helm-kustomize - helm chart referencing a local chart kustomized with kustomize
-├── traefik-example-manifests - plain k8s manifest files of whoami app
-└── traefik-whoami - local helm chart of whoami app
+├── argo-apps                 # argoCD apps - helmcharts or kustomized helmchats
+├── argoCD                    # argocd deployment
+├── helm-chart-chart          # helm chart referencing a local chart
+├── helm-kustomize            # helm chart referencing a local chart kustomized with kustomize
+├── traefik-example-manifests # plain k8s manifest files of whoami app
+└── traefik-whoami            # local helm chart of whoami app
 ```
 
 ## argo-apps
+<details>
+<summary>Folder structure explanation</summary>
+
 ```
 argo-apps/
 ├── base/                               # helm charts 
@@ -37,8 +40,10 @@ argo-apps/
         ├── hiha/
         └── hihi/
 ```
+</details>
 
-Future plans helm charts and kustomize
+<details>
+<summary>Future plans helm charts and kustomize</summary>
 ```
 .
 ├── base
@@ -64,6 +69,7 @@ Future plans helm charts and kustomize
         └── kustomize
             └── hihi
 ```
+</details>
 
 ## argoCD
 
