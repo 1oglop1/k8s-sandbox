@@ -70,6 +70,16 @@ Future plans helm charts and kustomize
 Completely local pulumi project which deploys `argoCD`, `gitea`, `ingres-nginx` and other basic things with 
 a single `pulumi up`.
 
+```
+cd argoCD
+asdf install
+corepack enable
+asdf reshim nodejs
+yarn
+pulumi up
+```
+
+
 ArgoCD uses `gitea` as a source for applications.
 Creating or updating application requires git commit to gitea which is as simple as
 ```
