@@ -23,4 +23,5 @@ update_all.sh
 /lambda/cognito-auth/src/config.json
 # treat argo-apps as not git but git
 argo-apps/**/.git
+argo-apps/.git
 

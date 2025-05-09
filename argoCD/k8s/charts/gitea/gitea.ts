@@ -1,7 +1,3 @@
-import Handlebars from "handlebars";
-import * as yaml from "js-yaml";
-
-import * as aws from "@pulumi/aws";
 import * as k8s from "@pulumi/kubernetes";
 import * as pulumi from "@pulumi/pulumi";
 
@@ -133,7 +129,8 @@ export class GiteaArgoCd extends pulumi.ComponentResource {
     // Create the Gitea repository credentials secret for ArgoCD
     const giteaRepoSecret = new k8s.core.v1.Secret(rcName("gitea-repo-creds"), {
       metadata: {
-        name: "gitea-repo-creds",
+        // name: "gitea-repo-creds",
+        name: rcName("gitea-repo-creds"),
         namespace: "argocd",
         labels: {
           "argocd.argoproj.io/secret-type": "repository",
@@ -214,6 +211,7 @@ export class GiteaArgoCd extends pulumi.ComponentResource {
     // },{ parent, provider });
     
     const basePath = "base"
+    
     const infraAppSet = new k8s.apiextensions.CustomResource(rcName("apps"), {
       apiVersion: "argoproj.io/v1alpha1",
       kind: "ApplicationSet",

@@ -1,5 +1,9 @@
 # k8s / pulumi / helm / kustomize sandbox
 
+https://codefresh.io/blog/creating-temporary-preview-environments-based-pull-requests-argo-cd-codefresh/
+
+https://argo-cd.readthedocs.io/en/latest/operator-manual/applicationset/Generators-Pull-Request/#template
+
 **WARNING THIS IS NOT SAFE FOR PRODUCTION**
 This project is designed to work with local k8s cluster powerd by [orbstack](https://orbstack.dev/)
 The intention is to have a good dev env which is easy to build up and teardown.

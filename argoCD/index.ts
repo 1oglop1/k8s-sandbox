@@ -6,7 +6,7 @@ import * as k8s from "@pulumi/kubernetes";
 import * as pulumi from "@pulumi/pulumi";
 
 import * as pu8s from "./k8s";
-import { parseYaml } from "./k8s/yaml";
+
 
 const stack = pulumi.getStack();
 
@@ -98,7 +98,8 @@ new cmd.local.Command(
   {
     dependsOn: [gitea, argo],
   }
-).stdout.apply(console.log);
+)
+// .stdout.apply(console.log);
 
 new pu8s.charts.GiteaArgoCd("gitea-argo", {
   repoUrl: `https://${gitMeta.giteaHostName}/${gitMeta.username}/${gitMeta.repoName}`,
@@ -108,3 +109,20 @@ new pu8s.charts.GiteaArgoCd("gitea-argo", {
   provider,
   namespace: "infra"
 },{dependsOn: [argo, gitea]});
+
+new pu8s.charts.GiteaArgoCd("gitea-argo-services", {
+  repoUrl: `https://${gitMeta.giteaHostName}/${gitMeta.username}/${gitMeta.repoName}`,
+  username: gitMeta.username,
+  password: gitMeta.password,
+  clusterName: "orbstack",
+  provider,
+  namespace: "services"
+},{dependsOn: [argo, gitea]});
+
+// new pu8s.cdk.MyDb(pu8s.cdk.app,"db")
+
+// const manifest = pu8s.cdk.app.synthYaml()
+// // const mf = pu8s.cdk.app.synth()
+
+// const sas= new pulumi.asset.StringAsset(manifest)
+// new k8s.yaml.v2.ConfigGroup("pg-app",{yaml: sas.text})
