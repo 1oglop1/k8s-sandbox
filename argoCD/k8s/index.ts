@@ -7,6 +7,4 @@ export interface K8sChartArgs {
 }
 
 export * as charts from "./charts";
-export * as cdk from "./cdk";
 export * as serviceAccount from "./service-account";
-export * as yaml from "./yaml";
