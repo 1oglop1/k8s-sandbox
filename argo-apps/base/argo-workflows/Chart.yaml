@@ -1,0 +1,14 @@
+apiVersion: v2
+name: argo-workflows-infra
+description: install argocd workflows
+type: application
+version: 0.1.0
+
+
+dependencies:
+  - name: argo-workflows  #  this has to be the same name as the chart 
+    version: "0.45.14"
+    repository: https://argoproj.github.io/argo-helm
+
+
+

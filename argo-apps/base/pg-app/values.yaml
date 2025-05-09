@@ -1,0 +1,16 @@
+ postgres:
+    database: "test"
+    # hostPrefix: "test"
+    user: "test"
+    port: "5432"
+    cluster:
+      enabled: true
+      numberOfInstances: 2
+      storageSize: "500Mi"
+      # storageClass: "gp3"
+      version: "16"
+      parameters:
+        wal_level: logical
+        max_replication_slots: "5"
+        max_wal_senders: "10"
+        listen_addresses: "*"

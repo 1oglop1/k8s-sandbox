@@ -1,0 +1,4 @@
+traefik-whoami:
+  whoami:
+    name: "haha-chart"
+    domain: haha.k8s.orb.local

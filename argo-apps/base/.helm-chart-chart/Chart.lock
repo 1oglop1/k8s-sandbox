@@ -1,0 +1,6 @@
+dependencies:
+- name: traefik-whoami
+  repository: file://../traefik-whoami
+  version: 0.1.1
+digest: sha256:58c0c535efa30805b4e96f512450f9337ed9fa95f69643eac5ea30d2863ba805
+generated: "2025-04-20T11:28:18.608332+02:00"

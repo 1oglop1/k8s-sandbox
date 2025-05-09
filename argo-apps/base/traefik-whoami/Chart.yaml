@@ -1,0 +1,8 @@
+apiVersion: v2
+name: traefik-whoami
+description: Helm chart of traefik whoami service
+type: application
+version: 0.1.2
+appVersion: "1.16.0"
+
+

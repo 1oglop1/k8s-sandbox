@@ -1,0 +1,27 @@
+{{- if .Values.postgres.cluster.enabled }}
+apiVersion: acid.zalan.do/v1
+kind: postgresql
+metadata:
+  name: "{{ .Release.Name }}-postgres"
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false
+  labels:
+    team: acid
+spec:
+  teamId: acid
+  volume:
+    size: {{ .Values.postgres.cluster.storageSize }}
+    storageClass: {{ .Values.postgres.cluster.storageClass }}
+  numberOfInstances: {{ .Values.postgres.cluster.numberOfInstances }}
+  users:
+    master:
+      - superuser
+      - createdb
+    {{- if .Values.postgres.cluster.users }}
+    {{- .Values.postgres.cluster.users | toYaml | nindent 4 }}
+    {{- end }}
+  databases: {{ .Values.postgres.cluster.databases | toYaml | nindent 4 }}
+  postgresql:
+    version: {{ .Values.postgres.cluster.version | quote }}
+    parameters: {{ .Values.postgres.cluster.parameters | toYaml | nindent 6 }}
+{{- end }}

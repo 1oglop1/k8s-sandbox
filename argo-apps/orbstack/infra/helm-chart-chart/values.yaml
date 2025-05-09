@@ -1,0 +1,8 @@
+metadata:
+  labels:
+    environment: bebe
+
+traefik-whoami:
+  whoami:
+    name: "dede-chart"
+    domain: dede.k8s.orb.local

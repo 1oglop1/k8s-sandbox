@@ -1,0 +1,41 @@
+postgres-operator:
+  fullnameOverride: postgres-operator
+postgres-operator-ui:
+  fullnameOverride: postgres-operator-ui
+  envs:
+    targetNamespace: "*"
+  ingress:
+    enabled: true
+    ingressClassName: "nginx"
+    # annotations:
+    #   "nginx.ingress.kubernetes.io/force-ssl-redirect": "true"
+    #   "nginx.ingress.kubernetes.io/backend-protocol": "HTTP"
+    hosts:
+      - host: pgui.k8s.orb.local
+        paths: ["/"]
+  extraEnvs:
+    []
+    # Exemple of settings to make snapshot view working in the ui when using AWS
+    # - name: WALE_S3_ENDPOINT
+    #   value: https+path://s3.us-east-1.amazonaws.com:443
+    # - name: SPILO_S3_BACKUP_PREFIX
+    #   value: spilo/
+    # - name: AWS_ACCESS_KEY_ID
+    #   valueFrom:
+    #     secretKeyRef:
+    #       name: <postgres operator secret with AWS token>
+    #       key: AWS_ACCESS_KEY_ID
+    # - name: AWS_SECRET_ACCESS_KEY
+    #   valueFrom:
+    #     secretKeyRef:
+    #       name: <postgres operator secret with AWS token>
+    #       key: AWS_SECRET_ACCESS_KEY
+    # - name: AWS_DEFAULT_REGION
+    #   valueFrom:
+    #     secretKeyRef:
+    #       name: <postgres operator secret with AWS token>
+    #       key: AWS_DEFAULT_REGION
+    # - name: SPILO_S3_BACKUP_BUCKET
+    #   value: <s3 bucket used by the operator>
+    # - name: "USE_AWS_INSTANCE_PROFILE"
+    #   value: "true"

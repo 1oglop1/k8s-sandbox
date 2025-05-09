@@ -1,0 +1,21 @@
+argo-workflows:
+  server:
+      # Disable authentication by setting secure mode to false
+    secure: false
+    
+    # Set auth mode to "server" which allows disabling auth
+    authModes: ["server"]
+    
+    # Add extra arguments to disable auth
+    # extraArgs:
+    #   - --auth-mode=server
+    #   - --insecure-skip-verify
+    #   - --insecure
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      hosts:
+        - workflows.k8s.orb.local
+      paths:
+        - /
+      pathType: Prefix
