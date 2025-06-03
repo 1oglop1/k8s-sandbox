@@ -23,7 +23,7 @@ export class Gitea extends pulumi.ComponentResource {
 
     const { provider, version, hostname, namespace, username, password } = args;
     const parent = this;
-    const rcName = mkResourceNameFn(`${name}-`)
+    const rcName = mkResourceNameFn(`${name}-`);
 
     const giteaRelease = new k8s.helm.v3.Release(
       rcName("gitea"),
@@ -116,34 +116,38 @@ export interface GiteaArgoCdArgs {
   username: pulumi.Input<string>;
   password: pulumi.Input<string>;
   clusterName: pulumi.Input<string>;
-  namespace: string;
+  namespaces: string[];
 }
 
 export class GiteaArgoCd extends pulumi.ComponentResource {
   constructor(name: string, args: GiteaArgoCdArgs, opts?: pulumi.ResourceOptions) {
     super("bluecode:kubernetes:charts:GiteaArgoCd", name, {}, opts);
 
-    const { provider, repoUrl, username, password, clusterName, namespace} = args;
+    const { provider, repoUrl, username, password, clusterName, namespaces } = args;
     const parent = this;
-    const rcName = mkResourceNameFn(`${name}-`)
+    const rcName = mkResourceNameFn(`${name}-`);
     // Create the Gitea repository credentials secret for ArgoCD
-    const giteaRepoSecret = new k8s.core.v1.Secret(rcName("gitea-repo-creds"), {
-      metadata: {
-        // name: "gitea-repo-creds",
-        name: rcName("gitea-repo-creds"),
-        namespace: "argocd",
-        labels: {
-          "argocd.argoproj.io/secret-type": "repository",
+    const giteaRepoSecret = new k8s.core.v1.Secret(
+      rcName("gitea-repo-creds"),
+      {
+        metadata: {
+          // name: "gitea-repo-creds",
+          name: rcName("gitea-repo-creds"),
+          namespace: "argocd",
+          labels: {
+            "argocd.argoproj.io/secret-type": "repository",
+          },
+        },
+        type: "Opaque",
+        stringData: {
+          type: "git",
+          url: repoUrl,
+          username: username,
+          password: password,
         },
       },
-      type: "Opaque",
-      stringData: {
-        type: "git",
-        url: repoUrl,
-        username: username,
-        password: password,
-      },
-    },{ parent, provider });
+      { parent, provider }
+    );
 
     // Create a separate ApplicationSet for the clusterName/infra namespace
     // const infraAppSet = new k8s.apiextensions.CustomResource(rcName("infra-apps"), {
@@ -154,7 +158,7 @@ export class GiteaArgoCd extends pulumi.ComponentResource {
     //     namespace: "argocd",
     //   },
     //   spec: {
-    //       "ignoreApplicationDifferences": [ 
+    //       "ignoreApplicationDifferences": [
     //         {
     //           "jsonPointers": [
     //             "/spec/syncPolicy"
@@ -193,7 +197,7 @@ export class GiteaArgoCd extends pulumi.ComponentResource {
     //         },
     //         destination: {
     //           server: "https://kubernetes.default.svc",
-    //           namespace: "infra", 
+    //           namespace: "infra",
     //         },
     //         syncPolicy: {
     //           automated: {
@@ -209,89 +213,83 @@ export class GiteaArgoCd extends pulumi.ComponentResource {
     //     },
     //   },
     // },{ parent, provider });
-    
-    const basePath = "base"
-    
-    const infraAppSet = new k8s.apiextensions.CustomResource(rcName("apps"), {
-      apiVersion: "argoproj.io/v1alpha1",
-      kind: "ApplicationSet",
-      metadata: {
-        labels: {
-          "app.kubernetes.io/name": `${namespace}-apps`
-        },
-        // annotations: {
-        //   "notifications.argoproj.io/subscribe.on-deployed.github": "",
-        //   "notifications.argoproj.io/subscribe.on-sync-failed.github": ""
-        // },
-        name: `${namespace}-apps`,
-        namespace: "argocd",
-      },
-      spec: {
-        ignoreApplicationDifferences: [
-          {
-            jsonPointers: [
-              "/spec/syncPolicy"
-            ]
-          }
-        ],
-        generators: [
-          {
-            git: {
-              repoURL: repoUrl,
-              revision: "HEAD",
-              directories: [
-                {path: `${clusterName}/${namespace}/*`},
-                {path: `${clusterName}/${namespace}/.*`, exclude: true},
-              ],
-            },
-          },
-        ],
-        template: {
-          metadata: {
-            name: `${namespace}-{{path.basename}}`,
-          },
-          spec: {
-            project: "default",
-            source: {
-              repoURL: repoUrl,
-              targetRevision: "HEAD",
-              path: `${basePath}/{{path.basename}}`,
-              helm: {
-                valueFiles: [
-                  "values.yaml",
-                  `../../${clusterName}/${namespace}/{{path.basename}}/values.yaml`
-                ],
-                ignoreMissingValueFiles: true
-              }
-            },
-            destination: {
-              name: "in-cluster",
-              namespace: namespace,
-            },
-            ignoreDifferences: [
-              {
-                group: "apps",
-                kind: "Deployment",
-                jsonPointers: [
-                  "/spec/replicas"
-                ]
-              }
-            ],
-            syncPolicy: {
-              automated: {
-                prune: true,
-                selfHeal: true,
-              },
-              syncOptions: [
-                "CreateNamespace=true",
-                "FailOnSharedResource=true"
-              ],
-            },
-          },
-        },
-      },
-    }, { parent, provider });
-  
-  }
 
+    const basePath = "base";
+    namespaces.forEach(
+      (namespace) =>
+        new k8s.apiextensions.CustomResource(
+          rcName(`apps-${namespace}`),
+          {
+            apiVersion: "argoproj.io/v1alpha1",
+            kind: "ApplicationSet",
+            metadata: {
+              labels: {
+                "app.kubernetes.io/name": `${namespace}-apps`,
+              },
+              // annotations: {
+              //   "notifications.argoproj.io/subscribe.on-deployed.github": "",
+              //   "notifications.argoproj.io/subscribe.on-sync-failed.github": ""
+              // },
+              name: `${namespace}-apps`,
+              namespace: "argocd",
+            },
+            spec: {
+              ignoreApplicationDifferences: [
+                {
+                  jsonPointers: ["/spec/syncPolicy"],
+                },
+              ],
+              generators: [
+                {
+                  git: {
+                    repoURL: repoUrl,
+                    revision: "HEAD",
+                    directories: [
+                      { path: `${clusterName}/${namespace}/*` },
+                      { path: `${clusterName}/${namespace}/.*`, exclude: true },
+                    ],
+                  },
+                },
+              ],
+              template: {
+                metadata: {
+                  name: `${namespace}-{{path.basename}}`,
+                },
+                spec: {
+                  project: "default",
+                  source: {
+                    repoURL: repoUrl,
+                    targetRevision: "HEAD",
+                    path: `${basePath}/{{path.basename}}`,
+                    helm: {
+                      valueFiles: ["values.yaml", `../../${clusterName}/${namespace}/{{path.basename}}/values.yaml`],
+                      ignoreMissingValueFiles: true,
+                    },
+                  },
+                  destination: {
+                    name: "in-cluster",
+                    namespace: namespace,
+                  },
+                  ignoreDifferences: [
+                    {
+                      group: "apps",
+                      kind: "Deployment",
+                      jsonPointers: ["/spec/replicas"],
+                    },
+                  ],
+                  syncPolicy: {
+                    automated: {
+                      prune: true,
+                      selfHeal: true,
+                    },
+                    syncOptions: ["CreateNamespace=true", "FailOnSharedResource=true"],
+                  },
+                },
+              },
+            },
+          },
+          { parent, provider }
+        )
+    );
+  }
 }

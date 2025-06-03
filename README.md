@@ -23,26 +23,15 @@ The intention is to have a good dev env which is easy to build up and teardown.
 <summary>Folder structure explanation</summary>
 
 ```
-argo-apps/
+./
 ├── base/                               # helm charts 
-│   ├── helm-chart-chart/
+│   ├── dagster/
 │   │   ├── Chart.yaml
 │   │   └── values.yaml                 # base values 
-│   └── traefik-whoami/
-│       ├── Chart.yaml
-│       ├── templates/
-│       └── values.yaml
-└── orbstack/
-    ├── infra/                          # namespace - application set argoCD/k8s/charts/gitea/gitea.ts
-    │   ├── .this-app-is-not-deployed/  # folders starting with . are ignored by ArgoCD
-    │   │   └── values.yaml             
-    │   ├── helm-chart-chart/           # deployed app to namespace
-    │   │   └── values.yaml             # app specific overrides
-    │   └── postgres-operator/
-    │       └── values.yaml
+└── prod/  # name of the environment / cluster
     └── services/                       # namespace with different services
-        ├── hiha/
-        └── hihi/
+        ├── dagster/
+        │   └── values.yaml             # app specific overrides
 ```
 </details>
 

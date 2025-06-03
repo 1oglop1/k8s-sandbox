@@ -1,3 +1,0 @@
-whoami:
-  name: "default_chart_name"
-  domain: who.k8s.orb.local

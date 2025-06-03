@@ -107,19 +107,9 @@ new pu8s.charts.GiteaArgoCd("gitea-argo", {
   password: gitMeta.password,
   clusterName: "orbstack",
   provider,
-  namespace: "infra"
+  namespaces: ["infra","services","kube-system"]
 },{dependsOn: [argo, gitea]});
 
-new pu8s.charts.GiteaArgoCd("gitea-argo-services", {
-  repoUrl: `https://${gitMeta.giteaHostName}/${gitMeta.username}/${gitMeta.repoName}`,
-  username: gitMeta.username,
-  password: gitMeta.password,
-  clusterName: "orbstack",
-  provider,
-  namespace: "services"
-},{dependsOn: [argo, gitea]});
-
-// new pu8s.cdk.MyDb(pu8s.cdk.app,"db")
 
 // const manifest = pu8s.cdk.app.synthYaml()
 // // const mf = pu8s.cdk.app.synth()

@@ -1,0 +1,13 @@
+name: dag
+services:
+  dagproj:
+    command: tail -f /dev/null
+    build:
+      context: "."
+      dockerfile: "./Dockerfile"
+    image: dagproj
+    platform: linux/amd64
+    # ports:
+    #   - "3000:3000"
+    #   - "4000:4000"
+  

@@ -64,8 +64,8 @@ export class ArgoCD extends pulumi.ComponentResource {
               "kustomize.buildOptions": "--enable-helm --load-restrictor=LoadRestrictionsNone",
               "users.anonymous.enabled": "false",
               url: "argocd.k8s.orb.local",
-              "timeout.reconciliation": "30s", // default 180 - disables argo auto sync
-              "timeout.hard.reconciliation": "300s" // default
+              "timeout.reconciliation": "10s", // default 180 - disables argo auto sync
+              "timeout.hard.reconciliation": "60s" // default
             },
             rbac: {
               "policy.default": "role:admin",
